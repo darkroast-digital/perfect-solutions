@@ -1,17 +1,34 @@
 <?php
 require 'vendor/autoload.php';
-use Mailgun\Mailgun;
+use PHPMailer\PHPMailer\PHPMailer;
 
-$mg = Mailgun::create('key-1715c074f053673f6e3c4c79e8595390');
+$params = $request->getParams();
+$mail = new PHPMailer;
 
-# Now, compose and send your message.
-# $mg->messages()->send($domain, $params);
-$mg->messages()->send('sandbox54da33a8b2644faebc547af411755bc1.mailgun.org', [
-  'from'    => $_POST['email'],
-  'to'      => 'kim@darkroast.co',
-  'subject' => 'New message from Perfect Solutions LTD',
-  'html'    => "Name: " . $_POST['name'] . "<br/>" .
-                "Email: " . $_POST['email'] . "<br/>" .
-                "Phone: " . $_POST['phone'] . "<br/>" .
-                "Message: " . $_POST['message']
-]);
+$name = $params['name'];
+$email = $params['email'];
+$phone = $params['phone'];
+$message = $params['message'];
+
+$mail->setFrom($email, $name);
+$mail->addAddress('mattsyring@hotmail.com', 'Perfect Solutions Ltd.');
+$mail->addReplyTo('mattsyring@hotmail.com', 'Perfect Solutions Ltd.');
+$mail->ReutrnPath='mattsyring@hotmail.com';
+
+$mail->isHTML(true);
+
+$body = 'Name: ' . $name . "<br/>" .
+        'Email: ' . $email . "<br/>" .
+        'Phone: ' . $phone . "<br/>" .
+        'Message: ' . $message;
+
+$mail->Subject = "New message from Perfect Solutions website!";
+$mail->Body    = $body;
+$mail->AltBody = $body;
+
+if(!$mail->send()) {
+    echo 'Message could not be sent.';
+    echo 'Mailer Error: ' . $mail->ErrorInfo;
+} else {
+    echo 'Success!';
+}
