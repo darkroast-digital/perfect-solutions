@@ -21,7 +21,6 @@
   "dependencies": {
     "autoprefixer": "^7.1.1",
     "concurrently": "^3.4.0",
-    "phpmailer": "phpmailer/phpmailer",
     "slick-carousel": "^1.7.1"
   }
 }
